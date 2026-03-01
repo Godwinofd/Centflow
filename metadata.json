@@ -1,0 +1,8 @@
+{
+  "name": "Centflow Digital Marketing Agency",
+  "description": "A premium, high-converting digital marketing agency website with a blue and black aesthetic, featuring specialized services, packages, and interactive project showcases.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
