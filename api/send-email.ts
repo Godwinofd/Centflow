@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
-import { NOTIFY_TEMPLATE_HTML, CONFIRM_TEMPLATE_HTML } from '../utils/emailTemplates';
+import { NOTIFY_TEMPLATE_HTML, CONFIRM_TEMPLATE_HTML } from './emailTemplates';
 
 const CENTFLOW_EMAIL = process.env.GMAIL_USER!;
 const APP_PASSWORD = process.env.GMAIL_APP_PASSWORD!;
