@@ -1,93 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centflow | Convert Clicks To Capital</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Jura:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
-    
-    <!-- ElevenLabs Conversational AI Widget -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#2D47FF',
-              black: '#000000',
-              white: '#FFFFFF',
-            },
-            fontFamily: {
-              jura: ['Jura', 'sans-serif'],
-              anton: ['Anton', 'sans-serif'],
-              sf: ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-            }
-          }
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png"
+    href="https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png" />
+  <link rel="apple-touch-icon"
+    href="https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png" />
+
+  <!-- ── Primary SEO ───────────────────────────────────────────── -->
+  <title>Centflow | Growth Infrastructure Agency — London</title>
+  <meta name="description"
+    content="Centflow is a London-based growth infrastructure agency. We build the systems, paid media, and conversion architecture that turn enquiries into revenue for service-based businesses." />
+  <meta name="keywords"
+    content="digital marketing agency London, paid media London, SEO London, growth agency London, web design London, Meta ads London, Google ads London, conversion rate optimisation London" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#2D47FF" />
+  <link rel="canonical" href="https://centflow-agency.com" />
+
+  <!-- ── Open Graph ─────────────────────────────────────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Centflow" />
+  <meta property="og:title" content="Centflow | Growth Infrastructure Agency — London" />
+  <meta property="og:description"
+    content="We build the growth systems that turn enquiries into revenue. Paid media, SEO, web design, and AI automation for service-based businesses in London and beyond." />
+  <meta property="og:url" content="https://centflow-agency.com" />
+  <meta property="og:image"
+    content="https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_GB" />
+
+  <!-- ── Twitter Card ───────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Centflow | Growth Infrastructure Agency — London" />
+  <meta name="twitter:description"
+    content="We build the growth systems that turn enquiries into revenue for service-based businesses in London." />
+  <meta name="twitter:image"
+    content="https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png" />
+
+  <!-- ── LocalBusiness Structured Data (JSON-LD) ────────────────── -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Centflow",
+      "description": "Growth infrastructure agency specialising in paid media, SEO, web design, and AI automation for service-based businesses.",
+      "url": "https://centflow-agency.com",
+      "logo": "https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png",
+      "image": "https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png",
+      "email": "enquiries@centflow-agency.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2C Bath Place, Blackrock",
+        "addressLocality": "Dublin",
+        "addressRegion": "Co. Dublin",
+        "postalCode": "A94 T0C9",
+        "addressCountry": "IE"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "London" },
+        { "@type": "Country", "name": "United Kingdom" },
+        { "@type": "Country", "name": "Ireland" }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/centflow_/",
+        "https://www.tiktok.com/@cent.flow"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Growth Infrastructure Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Paid Media (Meta Ads & Google Ads)" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO & Organic Growth" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Design & Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Automation Ecosystems" } }
+        ]
       }
+    }
     </script>
-    <style>
-      body {
-        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background-color: #000000;
-        color: #ffffff;
-        margin: 0;
-        overflow-x: hidden;
-      }
-      h1, h2, h3, h4, h5, h6, .font-jura {
-        font-family: 'Jura', sans-serif;
-        font-weight: 700;
-      }
-      
-      .menu-overlay {
-        transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-      }
-      
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #000;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #2D47FF;
-        border-radius: 4px;
-      }
-      
-      .text-glow {
-        text-shadow: 0 0 20px rgba(45, 71, 255, 0.4);
-      }
-      
-      .bg-blur {
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "three": "https://esm.sh/three@0.160.0",
-    "ogl": "https://esm.sh/ogl@0.0.116",
-    "postprocessing": "https://esm.sh/postprocessing@6.34.1",
-    "face-api.js": "https://esm.sh/face-api.js@0.22.2",
-    "@google/genai": "https://esm.sh/@google/genai@^1.42.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+
+  <!-- ── Fonts ─────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Jura:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet" />
+
+  <!-- ── Styles ────────────────────────────────────────────────── -->
+  <link rel="stylesheet" href="/index.css" />
+
+  <!-- ── ElevenLabs Conversational AI Widget (deferred) ────────── -->
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 </head>
-  <body>
-    <div id="root"></div>
-    <!-- ElevenLabs Conversational AI Agent -->
-    <elevenlabs-convai agent-id="agent_8901kj3hvb72f75rbdcvwdj98vm5"></elevenlabs-convai>
+
+<body>
+  <div id="root"></div>
+  <!-- ElevenLabs Conversational AI Agent -->
+  <elevenlabs-convai agent-id="agent_8901kj3hvb72f75rbdcvwdj98vm5"></elevenlabs-convai>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

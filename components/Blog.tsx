@@ -1,6 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
+interface BlogProps {
+  onNavigate: (page: string) => void;
+}
+
 const MOCK_BLOGS = [
   {
     id: "LOG-001",
@@ -84,7 +88,7 @@ const MOCK_BLOGS = [
   }
 ];
 
-export const Blog: React.FC = () => {
+export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -103,9 +107,11 @@ export const Blog: React.FC = () => {
           {MOCK_BLOGS.map((post, i) => (
             <article key={post.id} className="group relative bg-[#080808] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-primary/50 transition-all duration-700 flex flex-col h-full shadow-2xl">
               <div className="aspect-[16/10] overflow-hidden relative">
-                <img 
-                  src={post.img} 
-                  alt={post.title} 
+                <img
+                  src={post.img}
+                  alt={post.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110 opacity-60"
                 />
                 <div className="absolute top-6 left-6 flex gap-2">
@@ -128,7 +134,9 @@ export const Blog: React.FC = () => {
                 </p>
 
                 <div className="mt-auto pt-8 border-t border-white/5 flex justify-between items-center">
-                  <button className="flex items-center gap-3 text-[10px] font-bold font-jura text-white hover:text-primary transition-colors tracking-widest uppercase">
+                  <button
+                    onClick={() => onNavigate(`blog-${post.id}`)}
+                    className="flex items-center gap-3 text-[10px] font-bold font-jura text-white hover:text-primary transition-colors tracking-widest uppercase">
                     Read Report
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

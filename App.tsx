@@ -22,7 +22,9 @@ import { AgencyStats } from './components/AgencyStats';
 import { TeamStory } from './components/TeamStory';
 import { WebsiteAudit } from './components/WebsiteAudit';
 import { Blog } from './components/Blog';
+import { BlogPost } from './components/BlogPost';
 import { WebDesignBenefits } from './components/WebDesignBenefits';
+import { HowItWorks } from './components/HowItWorks';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,7 +44,7 @@ const App: React.FC = () => {
       script.src = "https://assets.calendly.com/assets/external/widget.js";
       script.async = true;
       document.body.appendChild(script);
-      
+
       return () => {
         if (document.body.contains(script)) {
           document.body.removeChild(script);
@@ -52,6 +54,18 @@ const App: React.FC = () => {
   }, [activePage]);
 
   const renderContent = () => {
+    if (activePage === 'How It Works') {
+      return (
+        <HowItWorks onNavigate={handleNavigate} />
+      );
+    }
+
+    // Individual blog post pages
+    if (activePage.startsWith('blog-LOG-')) {
+      const postId = activePage.replace('blog-', '');
+      return <BlogPost postId={postId} onNavigate={handleNavigate} />;
+    }
+
     if (activePage === 'Website Audit') {
       return <WebsiteAudit />;
     }
@@ -59,14 +73,14 @@ const App: React.FC = () => {
     if (activePage === 'Blog') {
       return (
         <div className="bg-black min-h-screen relative z-10">
-          <ServiceHero 
-            title="THE PERFORMANCE LOG" 
-            subtitle="Deep insights into SEO, performance architecture, and the digital marketing protocols driving capital for elite brands." 
-            badge="AGENCY INTELLIGENCE" 
+          <ServiceHero
+            title="THE PERFORMANCE LOG"
+            subtitle="Deep insights into SEO, performance architecture, and the digital marketing protocols driving capital for elite brands."
+            badge="AGENCY INTELLIGENCE"
           />
-          <Blog />
+          <Blog onNavigate={handleNavigate} />
           <div className="py-32 text-center">
-            <button 
+            <button
               onClick={() => handleNavigate('Home')}
               className="group relative px-10 py-4 bg-primary text-white font-bold rounded-full overflow-hidden transition-all shadow-lg active:scale-95 font-jura uppercase tracking-widest text-sm"
             >
@@ -81,14 +95,14 @@ const App: React.FC = () => {
     if (activePage === 'Get In Touch') {
       return (
         <div className="bg-black min-h-screen relative z-10">
-          <ServiceHero 
-            title="INITIATE PROTOCOL" 
-            subtitle="Ready to transform your digital static into capital? Our engineers are standing by to audit your growth engine." 
-            badge="SECURE UPLINK" 
+          <ServiceHero
+            title="START THE CONVERSATION"
+            subtitle="For service-based businesses looking to bring structure and accountability to their growth. Submit your enquiry below and a member of our team will review your current setup, identify where growth is being lost, and outline a clear path forward. You leave with actionable insight — whether we work together or not."
+            badge="GROWTH DIAGNOSTIC"
           />
           <Contact />
           <div className="py-32 text-center">
-            <button 
+            <button
               onClick={() => handleNavigate('Home')}
               className="group relative px-10 py-4 bg-primary text-white font-bold rounded-full overflow-hidden transition-all shadow-lg active:scale-95 font-jura uppercase tracking-widest text-sm"
             >
@@ -107,7 +121,7 @@ const App: React.FC = () => {
     ].includes(activePage);
 
     if (activePage === 'Book a 15min Call') {
-       return (
+      return (
         <div className="pt-32 bg-black min-h-screen relative z-10 flex flex-col">
           <div className="text-center mb-8 px-6">
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-anton text-primary uppercase leading-tight tracking-tighter text-glow">
@@ -117,23 +131,23 @@ const App: React.FC = () => {
               Pick a time that works for you. Let's audit your current systems and engineer a growth engine that actually converts.
             </p>
           </div>
-          
+
           <div className="flex-grow container mx-auto px-4 pb-20">
-            <div 
-              className="calendly-inline-widget w-full rounded-3xl overflow-hidden border border-white/5 bg-[#080808] shadow-2xl" 
-              data-url="https://calendly.com/oskar-centflow-agency" 
-              style={{ minWidth: '320px', height: '700px' }} 
+            <div
+              className="calendly-inline-widget w-full rounded-3xl overflow-hidden border border-white/5 bg-[#080808] shadow-2xl"
+              data-url="https://calendly.com/oskar-centflow-agency"
+              style={{ minWidth: '320px', height: '700px' }}
             />
           </div>
         </div>
-       );
+      );
     }
 
     if (isServicePage) {
       const isPaidMedia = activePage === 'Paid Media';
       const isAboutUs = activePage === 'About Us';
       const isWebdesign = activePage === 'Webdesign';
-      
+
       let title = activePage;
       let subtitle = `Engineering next-level excellence in ${activePage}. We combine data-driven strategies with cutting-edge technology to dominate the digital landscape.`;
       let badge = "Performance Protocol";
@@ -160,7 +174,7 @@ const App: React.FC = () => {
       return (
         <div className="bg-black min-h-screen relative z-10">
           <ServiceHero title={title} subtitle={subtitle} badge={badge} isPaidMedia={isPaidMedia} metadata={metadata} />
-          
+
           {isAboutUs && (
             <>
               <AgencyStats />
@@ -178,7 +192,7 @@ const App: React.FC = () => {
 
           <div className="py-32 text-center">
             <div className="mt-16 w-32 h-[1px] bg-primary mx-auto rounded-full mb-16 shadow-[0_0_20px_#2D47FF]" />
-            <button 
+            <button
               onClick={() => handleNavigate('Home')}
               className="group relative px-10 py-4 bg-primary text-white font-bold rounded-full overflow-hidden transition-all shadow-lg active:scale-95 font-jura uppercase tracking-widest text-sm"
             >
@@ -194,9 +208,9 @@ const App: React.FC = () => {
       <div className="bg-black relative z-10">
         <Hero />
         <TrustedBy />
-        <IdeaToReality />
+        <IdeaToReality onNavigate={handleNavigate} />
         <div id="relate"><CanYouRelate /></div>
-        <div id="digital-services"><Services /></div>
+        <div id="digital-services"><Services onNavigate={handleNavigate} /></div>
         <div id="benefits"><Benefits /></div>
         <div id="why-choose-us"><WhyChooseUs /></div>
         <div id="testimonials"><Testimonials /></div>
@@ -211,14 +225,14 @@ const App: React.FC = () => {
 
   return (
     <div className="relative min-h-screen selection:bg-primary selection:text-white bg-black overflow-x-hidden font-sf">
-      <Header 
-        onMenuToggle={toggleMenu} 
-        isMenuOpen={isMenuOpen} 
+      <Header
+        onMenuToggle={toggleMenu}
+        isMenuOpen={isMenuOpen}
         onLogoClick={handleNavigate}
         activePage={activePage}
       />
       <Menu isOpen={isMenuOpen} onClose={toggleMenu} onNavigate={handleNavigate} />
-      
+
       <main className="relative z-10">
         {renderContent()}
       </main>
