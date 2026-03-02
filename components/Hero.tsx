@@ -92,7 +92,9 @@ export const Hero: React.FC = () => {
               <span className="relative z-10">Book a Discovery Call</span>
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 opacity-20" />
             </a>
-            <button className="group relative px-8 py-4 border border-primary/40 text-white font-bold text-sm rounded-full overflow-hidden backdrop-blur-md transition-all hover:border-primary active:scale-95 font-jura uppercase tracking-[0.4em] bg-primary/5">
+            <button
+              onClick={() => document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group relative px-8 py-4 border border-primary/40 text-white font-bold text-sm rounded-full overflow-hidden backdrop-blur-md transition-all hover:border-primary active:scale-95 font-jura uppercase tracking-[0.4em] bg-primary/5">
               <span className="relative z-10">View Case Studies</span>
               <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 opacity-20" />
             </button>
