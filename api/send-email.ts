@@ -8,8 +8,8 @@ const APP_PASSWORD = process.env.GMAIL_APP_PASSWORD!;
 const LOGO_URL = 'https://res.cloudinary.com/dddvmez6s/image/upload/v1769032878/Image_13-01-2026_at_21.43-Photoroom_u2pmtm.png';
 
 // ── Internal notification email template ─────────────────────────────────────
-function notifyTemplate(name: string, email: string, service: string, message: string): string {
-    return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
+function notifyTemplate(name: string, email: string, phone: string, service: string, message: string): string {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:0;background:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;padding:40px 20px;">
     <tr><td align="center">
@@ -27,6 +27,7 @@ function notifyTemplate(name: string, email: string, service: string, message: s
               <tr><td style="padding:20px 24px;">
                 <p style="margin:0 0 4px;color:#fff;font-size:16px;font-weight:700;">${name}</p>
                 <p style="margin:0;color:#2D47FF;font-size:13px;">${email}</p>
+                <p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:12px;">Tel: ${phone}</p>
               </td></tr>
             </table>
             <p style="margin:0 0 8px;color:#2D47FF;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;">Service Requested</p>
@@ -62,8 +63,8 @@ function notifyTemplate(name: string, email: string, service: string, message: s
 }
 
 // ── Confirmation email template ───────────────────────────────────────────────
-function confirmTemplate(name: string, service: string, message: string): string {
-    return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
+function confirmTemplate(name: string, service: string, phone: string, message: string): string {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:0;background:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;padding:40px 20px;">
     <tr><td align="center">
@@ -88,6 +89,11 @@ function confirmTemplate(name: string, service: string, message: string): string
                   <tr>
                     <td style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;padding-bottom:4px;width:140px;">Service</td>
                     <td style="color:#fff;font-size:13px;padding-bottom:4px;">${service}</td>
+                  </tr>
+                  <tr><td colspan="2" style="border-top:1px solid rgba(255,255,255,0.05);padding:8px 0;"></td></tr>
+                  <tr>
+                    <td style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;padding-bottom:4px;">Phone</td>
+                    <td style="color:#fff;font-size:13px;padding-bottom:4px;">${phone}</td>
                   </tr>
                   <tr><td colspan="2" style="border-top:1px solid rgba(255,255,255,0.05);padding:8px 0;"></td></tr>
                   <tr>
@@ -133,80 +139,88 @@ function confirmTemplate(name: string, service: string, message: string): string
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
-    'https://centflow-agency.com',
-    'https://www.centflow-agency.com',
-    'http://localhost:3000',
-    'http://localhost:3001',
+  'https://centflow-agency.com',
+  'https://www.centflow-agency.com',
+  'http://localhost:3000',
+  'http://localhost:3001',
 ];
 
 function sanitize(input: unknown): string {
-    if (typeof input !== 'string') return '';
-    return input.replace(/<[^>]*>/g, '').replace(/[\r\n]{3,}/g, '\n\n').trim().slice(0, 2000);
+  if (typeof input !== 'string') return '';
+  return input.replace(/<[^>]*>/g, '').replace(/[\r\n]{3,}/g, '\n\n').trim().slice(0, 2000);
 }
 
 function isValidEmail(email: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone: string): boolean {
+  // Basic validation: at least 7 digits, allowed chars: 0-9, +, -, space, brackets
+  const digits = phone.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15;
 }
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    const origin = req.headers.origin ?? '';
-    if (ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Vary', 'Origin');
+  const origin = req.headers.origin ?? '';
+  if (ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Vary', 'Origin');
 
-    if (req.method === 'OPTIONS') return res.status(204).end();
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const contentLength = parseInt(req.headers['content-length'] ?? '0', 10);
-    if (contentLength > 16384) return res.status(413).json({ error: 'Request too large' });
+  const contentLength = parseInt(req.headers['content-length'] ?? '0', 10);
+  if (contentLength > 16384) return res.status(413).json({ error: 'Request too large' });
 
-    const name = sanitize(req.body?.name);
-    const email = sanitize(req.body?.email);
-    const service = sanitize(req.body?.service) || 'Not specified';
-    const message = sanitize(req.body?.message);
+  const name = sanitize(req.body?.name);
+  const email = sanitize(req.body?.email);
+  const phone = sanitize(req.body?.phone);
+  const service = sanitize(req.body?.service) || 'Not specified';
+  const message = sanitize(req.body?.message);
 
-    if (!name || !email || !message) return res.status(400).json({ error: 'Missing required fields' });
-    if (name.length < 2) return res.status(400).json({ error: 'Name too short' });
-    if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email address' });
-    if (message.length < 10) return res.status(400).json({ error: 'Message too short' });
+  if (!name || !email || !phone || !message) return res.status(400).json({ error: 'Missing required fields' });
+  if (name.length < 2) return res.status(400).json({ error: 'Name too short' });
+  if (!isValidEmail(email)) return res.status(400).json({ error: 'Invalid email address' });
+  if (!isValidPhone(phone)) return res.status(400).json({ error: 'Invalid phone number' });
+  if (message.length < 10) return res.status(400).json({ error: 'Message too short' });
 
-    if (!CENTFLOW_EMAIL || !APP_PASSWORD) {
-        console.error('[send-email] MISSING ENV VARS — GMAIL_USER or GMAIL_APP_PASSWORD not set in Vercel');
-        return res.status(500).json({ error: 'Server configuration error' });
-    }
+  if (!CENTFLOW_EMAIL || !APP_PASSWORD) {
+    console.error('[send-email] MISSING ENV VARS — GMAIL_USER or GMAIL_APP_PASSWORD not set in Vercel');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: { user: CENTFLOW_EMAIL, pass: APP_PASSWORD },
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: { user: CENTFLOW_EMAIL, pass: APP_PASSWORD },
+  });
+
+  try {
+    await transporter.verify();
+
+    await transporter.sendMail({
+      from: `"Centflow Website" <${CENTFLOW_EMAIL}>`,
+      to: CENTFLOW_EMAIL,
+      replyTo: email,
+      subject: `New Enquiry: ${name} — ${service}`,
+      html: notifyTemplate(name, email, phone, service, message.replace(/\n/g, '<br/>')),
     });
 
-    try {
-        await transporter.verify();
+    await transporter.sendMail({
+      from: `"Centflow" <${CENTFLOW_EMAIL}>`,
+      to: email,
+      replyTo: CENTFLOW_EMAIL,
+      subject: "We've received your enquiry — Centflow",
+      html: confirmTemplate(name, service, phone, message.replace(/\n/g, '<br/>')),
+    });
 
-        await transporter.sendMail({
-            from: `"Centflow Website" <${CENTFLOW_EMAIL}>`,
-            to: CENTFLOW_EMAIL,
-            replyTo: email,
-            subject: `New Enquiry: ${name} — ${service}`,
-            html: notifyTemplate(name, email, service, message.replace(/\n/g, '<br/>')),
-        });
-
-        await transporter.sendMail({
-            from: `"Centflow" <${CENTFLOW_EMAIL}>`,
-            to: email,
-            replyTo: CENTFLOW_EMAIL,
-            subject: "We've received your enquiry — Centflow",
-            html: confirmTemplate(name, service, message.replace(/\n/g, '<br/>')),
-        });
-
-        return res.status(200).json({ success: true });
-    } catch (err: unknown) {
-        const e = err as { code?: string; responseCode?: number; response?: string; message?: string };
-        console.error('[send-email] SMTP error:', { code: e?.code, responseCode: e?.responseCode, response: e?.response, message: e?.message });
-        return res.status(500).json({ error: 'Failed to send email' });
-    }
+    return res.status(200).json({ success: true });
+  } catch (err: unknown) {
+    const e = err as { code?: string; responseCode?: number; response?: string; message?: string };
+    console.error('[send-email] SMTP error:', { code: e?.code, responseCode: e?.responseCode, response: e?.response, message: e?.message });
+    return res.status(500).json({ error: 'Failed to send email' });
+  }
 }

@@ -10,6 +10,7 @@ export const Contact: React.FC = () => {
   // Form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [service, setService] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<Status>('idle');
@@ -34,11 +35,11 @@ export const Contact: React.FC = () => {
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, service: service || 'Not specified', message }),
+        body: JSON.stringify({ name, email, phone, service: service || 'Not specified', message }),
       });
       if (!res.ok) throw new Error('Send failed');
       setStatus('success');
-      setName(''); setEmail(''); setService(''); setMessage('');
+      setName(''); setEmail(''); setPhone(''); setService(''); setMessage('');
     } catch {
       setStatus('error');
     }
@@ -210,6 +211,17 @@ export const Contact: React.FC = () => {
                           onChange={e => setEmail(e.target.value)}
                           className="w-full bg-transparent border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-primary/50 outline-none transition-all text-sm font-sf group-hover/field:border-white/20"
                           placeholder="john@example.com"
+                        />
+                      </div>
+                      <div className="relative group/field md:col-span-2">
+                        <label className="absolute -top-3 left-4 px-2 bg-[#080808] text-[9px] font-bold text-primary uppercase tracking-[0.3em] z-10 transition-colors group-hover/field:text-white">Phone Number</label>
+                        <input
+                          type="tel"
+                          required
+                          value={phone}
+                          onChange={e => setPhone(e.target.value)}
+                          className="w-full bg-transparent border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-primary/50 outline-none transition-all text-sm font-sf group-hover/field:border-white/20"
+                          placeholder="+44 7700 900000"
                         />
                       </div>
                     </div>
