@@ -12,6 +12,7 @@
   "dependencies": {
     "@google/genai": "^1.42.0",
     "@types/nodemailer": "^7.0.11",
+    "@vercel/analytics": "^2.0.1",
     "face-api.js": "0.22.2",
     "nodemailer": "^8.0.1",
     "ogl": "0.0.116",
